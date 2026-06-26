@@ -1,0 +1,29 @@
+name: Destroy EKS Cluster
+
+on:
+  workflow_dispatch: # Strictly manual trigger for safety
+
+jobs:
+  destroy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Source Code
+      uses: actions/checkout@v4
+
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: us-east-1 # Keep this matched to your create workflow region
+
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v3
+      with:
+        terraform_version: 1.10.0 # Keeping it matched to your upgraded working version
+
+    - name: Run Cluster Destruction Script
+      run: |
+        chmod +x destroy-cluster.sh
+        ./destroy-cluster.sh
