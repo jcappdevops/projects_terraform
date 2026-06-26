@@ -23,12 +23,7 @@ jobs:
       with:
         terraform_version: 1.10.0 # Keeping it matched to your upgraded working version
 
-    - name: Initialize Backend
-      run: |
-        cd backend-setup
-        terraform init
-        terraform apply -auto-approve
-        
+    
     - name: Run Cluster Destruction Script
       run: |
         # Initialize the backend first so Terraform knows where the state is
